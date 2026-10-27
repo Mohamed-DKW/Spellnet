@@ -7,6 +7,7 @@
     "dev:backend": "cd backend && npm run dev",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "setup:local": "node scripts/setup-local.cjs",
     "ingest": "cd backend && npm run ingest",
     "chat": "cd backend && npm run chat",
     "migrate": "cd backend && npm run migrate"

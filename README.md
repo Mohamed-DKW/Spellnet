@@ -78,7 +78,10 @@ Clona el repositorio e instala las dependencias:
 git clone https://github.com/Mohamed-DKW/SpellNet.git
 cd SpellNet
 npm run install:all
+npm run setup:local
 ```
+
+`setup:local` crea `backend/.env` con una clave JWT aleatoria y valores locales predeterminados; no sobrescribe un archivo existente. Google OAuth y la búsqueda web con Tavily son opcionales: el inicio de sesión por email y contraseña y el flujo RAG local funcionan sin esas credenciales. Ollama y Docker sí deben estar instalados, y hay que descargar los modelos una vez.
 
 ---
 
@@ -107,24 +110,13 @@ newgrp docker
 docker --version
 ```
 
-**2. Configurar las variables de entorno**
+**2. Preparar la configuración local**
 
 ```bash
-cp backend/.env.example backend/.env
+npm run setup:local
 ```
 
-Contenido de `backend/.env`:
-
-```env
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=1234
-DB_NAME=spellnet
-CHROMA_URL=http://localhost:8000
-OLLAMA_URL=http://localhost:11434
-OLLAMA_MODEL=gemma2:2b
-```
+El comando genera los valores locales automáticamente a partir de `backend/.env.example`. No hace falta configurar Google OAuth ni Tavily para iniciar sesión con email y contraseña y usar el RAG local.
 
 **3. Levantar MySQL y ChromaDB**
 
@@ -155,20 +147,15 @@ npm run migrate
 
 Descarga e instala [Docker Desktop para Windows](https://www.docker.com/products/docker-desktop/). Requiere Windows 10/11 de 64 bits con WSL 2 y virtualización habilitada en BIOS.
 
-**2. Configurar las variables de entorno**
+**2. Preparar la configuración local**
 
-Crea o edita `backend/.env`:
+Desde la raíz del proyecto, ejecuta:
 
-```env
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=1234
-DB_NAME=spellnet
-CHROMA_URL=http://localhost:8000
-OLLAMA_URL=http://localhost:11434
-OLLAMA_MODEL=gemma2:2b
+```powershell
+npm run setup:local
 ```
+
+El comando genera `backend/.env` automáticamente y conserva cualquier archivo que ya exista. Google OAuth y Tavily son opcionales; puedes usar el registro por email y contraseña sin configurarlos.
 
 **3. Levantar MySQL y ChromaDB**
 
@@ -205,7 +192,7 @@ docker compose down -v        # Detener y eliminar los datos
 
 ## Configuración de Ollama
 
-SpellNet usa **Gemma 2 2B** (`gemma2:2b`) para el chat y **`nomic-embed-text`** para generar embeddings en el servicio RAG. Ollama no los descarga automáticamente; instálalo y descarga ambos modelos una vez. La configuración local se crea copiando `backend/.env.example` a `backend/.env`, archivo que Git ignora.
+SpellNet usa **Gemma 2 2B** (`gemma2:2b`) para el chat y **`nomic-embed-text`** para generar embeddings en el servicio RAG. Ollama no descarga estos modelos automáticamente; instálalo y descárgalos una vez.
 
 ```bash
 # Instalar Ollama

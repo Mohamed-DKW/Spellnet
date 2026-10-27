@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import API from "../../../services/api";
 interface OAuthButtonProps {
     isSignup: boolean;
@@ -8,6 +9,23 @@ const loginWithGoogle = () => {
 };
 
 const BtnOAuth = ({isSignup} : OAuthButtonProps) => {
+    const [enabled, setEnabled] = useState(false);
+
+    useEffect(() => {
+        let active = true;
+        fetch(`${API}/api/auth/providers`)
+            .then((response) => response.ok ? response.json() : null)
+            .then((config) => {
+                if (active) setEnabled(config?.googleOAuthEnabled === true);
+            })
+            .catch(() => {
+                if (active) setEnabled(false);
+            });
+        return () => { active = false; };
+    }, []);
+
+    if (!enabled) return null;
+
     return <button onClick={loginWithGoogle} className="w-full py-2.5 bg-white font-bold rounded border border-amber-600 hover:from-amber-600 hover:to-amber-700 transition-all duration-200 cincel flex justify-center items-center gap-3"><span>{`${isSignup ? 'Crear cuenta con google': 'Iniciar sessión con google'}`}</span><img src="/img/img-google.png" alt="google-icon" className="w-7" /></button>
 }
 

@@ -86,7 +86,14 @@ router.post('/register', async (req, res) => {
     }
 
 });
+router.get('/providers', (_req, res) => {
+    res.json({ googleOAuthEnabled: Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) });
+});
+
 router.get('/google', async (req, res) => {
+    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+        return res.status(503).json({ error: 'El acceso con Google no está configurado en este servidor.' });
+    }
     const url = "https://accounts.google.com/o/oauth2/v2/auth?" +
         new URLSearchParams({
             client_id: process.env.GOOGLE_CLIENT_ID!,
@@ -99,6 +106,9 @@ router.get('/google', async (req, res) => {
     res.redirect(url);
 })
 router.get('/google/callback', async (req, res) => {
+    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+        return res.status(503).send('El acceso con Google no está configurado en este servidor.');
+    }
     const code = req.query.code;
     const tokenOauth = 'https://oauth2.googleapis.com/token';
     const oauthUserInfo = "https://www.googleapis.com/oauth2/v2/userinfo";
