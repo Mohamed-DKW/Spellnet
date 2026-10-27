@@ -1,0 +1,535 @@
+/* ── Fuentes ──────────────────────────────────────────────────────────────────*/
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:wght@400;600&display=swap');
+
+/* ── Animaciones ─────────────────────────────────────────────────────────────*/
+@keyframes fadeInUp   { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn     { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulseGold  { 0%, 100% { box-shadow: 0 0 12px rgba(251,191,36,0.2); } 50% { box-shadow: 0 0 28px rgba(251,191,36,0.5); } }
+@keyframes successPop { 0% { transform: scale(0.7); opacity: 0; } 70% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+@keyframes spin       { to { transform: rotate(360deg); } }
+@keyframes floatCard  { 0%, 100% { transform: translateY(0) rotateX(0deg); } 50% { transform: translateY(-6px) rotateX(2deg); } }
+
+/* ── Overlay y modal ─────────────────────────────────────────────────────────*/
+.pgw-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.25s ease;
+    padding: 16px;
+}
+.pgw-modal {
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: linear-gradient(160deg, #0f0800 0%, #0a0500 60%, #080300 100%);
+    border: 1px solid rgba(251, 191, 36, 0.35);
+    border-radius: 20px;
+    box-shadow: 0 0 60px rgba(180,83,9,0.25), 0 0 120px rgba(0,0,0,0.6), inset 0 1px 0 rgba(251,191,36,0.1);
+    animation: fadeInUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    scrollbar-width: none;
+}
+.pgw-modal::-webkit-scrollbar { display: none; }
+
+/* ── PayPal ───────────────────────────────────────────────────────────────────*/
+.pgw-paypal-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #003087, #009cde);
+    border: 1px solid rgba(0, 156, 222, 0.5);
+    color: #fff;
+    font-family: "Arial", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    letter-spacing: 0.02em;
+}
+.pgw-paypal-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #002070, #007ab8);
+    box-shadow: 0 0 24px rgba(0, 156, 222, 0.4);
+    transform: translateY(-1px);
+}
+.pgw-paypal-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.pgw-method-tabs { display: flex; gap: 0; margin-bottom: 24px; border-radius: 10px; overflow: hidden; border: 1px solid rgba(251,191,36,0.2); }
+.pgw-method-tab {
+    flex: 1;
+    padding: 10px 8px;
+    background: rgba(10,5,2,0.8);
+    border: none;
+    color: rgba(251,191,36,0.45);
+    font-family: "Cinzel", serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+.pgw-method-tab.active {
+    background: rgba(180,83,9,0.25);
+    color: #fde68a;
+    box-shadow: inset 0 -2px 0 rgba(251,191,36,0.5);
+}
+.pgw-method-tab:hover:not(.active) { background: rgba(20,10,3,0.9); color: rgba(251,191,36,0.7); }
+.pgw-paypal-info {
+    background: rgba(0,48,135,0.12);
+    border: 1px solid rgba(0,156,222,0.2);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* ── Cabecera del modal ──────────────────────────────────────────────────────*/
+.pgw-header {
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid rgba(251, 191, 36, 0.15);
+    background: linear-gradient(90deg, rgba(180,83,9,0.12), transparent);
+    position: relative;
+}
+.pgw-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(251, 191, 36, 0.08);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    color: rgba(251, 191, 36, 0.6);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.pgw-close:hover {
+    background: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+}
+
+/* ── Previsualización de la tarjeta ──────────────────────────────────────────*/
+.card-preview   { margin: 0 32px 24px; perspective: 1000px; }
+.card-3d {
+    height: 180px;
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    animation: floatCard 6s ease-in-out infinite;
+}
+.card-3d--visa        { background: linear-gradient(135deg,#1a1f71,#0d47a1); }
+.card-3d--mastercard  { background: linear-gradient(135deg,#1a1a1a,#2d2d2d); }
+.card-3d--amex        { background: linear-gradient(135deg,#006fcf,#0077c8); }
+.card-3d--discover    { background: linear-gradient(135deg,#ff6600,#e55300); }
+/* Brillo reflectivo sobre la tarjeta */
+.card-shine {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(255,255,255,0.04) 100%);
+    border-radius: 16px;
+}
+.card-chip {
+    width: 40px;
+    height: 30px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #d4a843, #a07020);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    position: relative;
+    margin-bottom: 20px;
+}
+/* Marco interior del chip EMV */
+.card-chip::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 3px;
+}
+.card-number     { font-family: 'Courier New', monospace; font-size: 18px; letter-spacing: 3px; color: rgba(255,255,255,0.85); margin-bottom: 14px; }
+.card-holder     { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.8); }
+.card-expiry     { font-family: 'Courier New', monospace; font-size: 13px; letter-spacing: 2px; color: rgba(255,255,255,0.8); }
+.card-field-label { font-size: 9px; color: rgba(255,255,255,0.5); margin-bottom: 2px; letter-spacing: 0.1em; font-family: 'Cinzel', serif; }
+.card-logo       { position: absolute; right: 24px; top: 22px; font-size: 13px; font-family: 'Cinzel', serif; font-weight: 700; letter-spacing: 0.08em; color: rgba(255,255,255,0.8); }
+/* Círculos del logo de Mastercard */
+.card-network    { position: absolute; right: 24px; bottom: 24px; display: flex; }
+.card-circle     { width: 32px; height: 32px; border-radius: 50%; opacity: 0.85; }
+
+/* ── Cuerpo del formulario ───────────────────────────────────────────────────*/
+.pgw-body  { padding: 0 32px 32px; }
+.pgw-label {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: rgba(251, 191, 36, 0.5);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+/* ── Inputs del formulario ───────────────────────────────────────────────────*/
+.pgw-input {
+    width: 100%;
+    background: rgba(10, 5, 2, 0.8);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: #fef3c7;
+    font-family: 'Crimson Text', serif;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+    box-sizing: border-box;
+}
+.pgw-input::placeholder { color: rgba(251, 191, 36, 0.2); }
+.pgw-input:focus  { border-color: rgba(251,191,36,0.6); box-shadow: 0 0 0 3px rgba(251,191,36,0.08); background: rgba(15,8,3,0.9); }
+.pgw-input.error  { border-color: rgba(239,68,68,0.6); box-shadow: 0 0 0 3px rgba(239,68,68,0.08); }
+.pgw-input.valid  { border-color: rgba(34,197,94,0.4); }
+
+.pgw-row-2   { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.field-group { margin-bottom: 20px; position: relative; }
+
+/* Icono decorativo a la derecha del input */
+.field-icon  { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: rgba(251,191,36,0.35); font-size: 16px; pointer-events: none; }
+.field-hint  { font-size: 11px; color: rgba(239,68,68,0.7); margin-top: 5px; font-style: italic; }
+
+/* ── Selector de tipo de tarjeta ─────────────────────────────────────────────*/
+.card-types    { display: flex; gap: 10px; margin-bottom: 24px; }
+.card-type-btn {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1.5px solid rgba(251, 191, 36, 0.15);
+    background: rgba(10, 5, 2, 0.6);
+    transition: all 0.25s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+.card-type-btn:hover    { border-color: rgba(251,191,36,0.35); background: rgba(20,10,3,0.8); }
+.card-type-btn.selected { border-color: rgba(251,191,36,0.6); background: rgba(180,83,9,0.15); box-shadow: 0 0 12px rgba(251,191,36,0.12); }
+.card-type-icon { font-family: 'Cinzel', serif; font-weight: 700; color: rgba(251,191,36,0.4); font-size: 14px; }
+.card-type-btn.selected .card-type-icon { color: #fbbf24; }
+.card-type-name { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.08em; color: rgba(251,191,36,0.6); }
+.card-type-btn.selected .card-type-name { color: #fde68a; }
+
+/* ── Resumen del plan ────────────────────────────────────────────────────────*/
+.plan-summary {
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, rgba(15,8,3,0.9), rgba(10,5,2,0.95));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ── Divisor decorativo ──────────────────────────────────────────────────────*/
+.pgw-divider { display: flex; align-items: center; gap: 12px; margin: 24px 0; }
+.pgw-divider::before,
+.pgw-divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(251,191,36,0.25), transparent); }
+.pgw-divider-label  { font-family: 'Cinzel', serif; font-size: 10px; color: rgba(251,191,36,0.35); letter-spacing: 0.1em; }
+
+/* ── Botón principal de pago ─────────────────────────────────────────────────*/
+.pgw-submit {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(180,83,9,0.9), rgba(146,64,14,1));
+    border: 1px solid rgba(251, 191, 36, 0.5);
+    color: #fef3c7;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.08em;
+    position: relative;
+    overflow: hidden;
+}
+.pgw-submit:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(217,119,6,1), rgba(180,83,9,1));
+    box-shadow: 0 0 24px rgba(251, 191, 36, 0.3);
+    transform: translateY(-1px);
+}
+.pgw-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.pgw-submit.loading  { animation: pulseGold 1.5s ease-in-out infinite; }
+
+/* ── Spinner de carga ────────────────────────────────────────────────────────*/
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(254,243,199,0.3);
+    border-top-color: #fef3c7;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+/* ── Pantalla de éxito ───────────────────────────────────────────────────────*/
+.success-screen { padding: 48px 32px; text-align: center; animation: fadeIn 0.4s ease; }
+.success-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(16,185,129,0.15));
+    border: 2px solid rgba(34, 197, 94, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 24px;
+    animation: successPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+    box-shadow: 0 0 30px rgba(34, 197, 94, 0.2);
+    color: #34d399;
+}
+
+/* ── Banner de error de API ──────────────────────────────────────────────────*/
+.error-banner {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    color: #fca5a5;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-align: center;
+}
+
+/* ── Badges de seguridad ─────────────────────────────────────────────────────*/
+.security-badge {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    color: rgba(251, 191, 36, 0.35);
+}
+/* ── Clases adicionales de subcomponentes ────────────────────────────────────*/
+
+/* PaymentHeader */
+.pgw-header-content  { display: flex; align-items: center; gap: 12px; }
+.pgw-header-icon     { font-size: 24px; }
+.pgw-header-title    { font-family: 'Cinzel', serif; font-size: 18px; color: #fef3c7; margin: 0; }
+.pgw-header-subtitle { font-family: 'Cinzel', serif; font-size: 12px; color: rgba(251,191,36,0.45); letter-spacing: 0.1em; margin: 0; }
+
+/* PlanSummary — colores por plan sin inline styles */
+.pgw-plan-icon-wrap--goblin       { background: rgba(22, 163, 74, 0.13);  border: 1px solid rgba(22, 163, 74, 0.33); }
+.pgw-plan-icon-wrap--wizard       { background: rgba(139, 92, 246, 0.13); border: 1px solid rgba(139, 92, 246, 0.33); }
+.pgw-plan-icon-wrap--elder-dragon { background: rgba(239, 68, 68, 0.13);  border: 1px solid rgba(239, 68, 68, 0.33); }
+
+.pgw-plan-icon-img--goblin       { filter: drop-shadow(0 0 6px rgba(22, 163, 74, 0.5)); }
+.pgw-plan-icon-img--wizard       { filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.5)); }
+.pgw-plan-icon-img--elder-dragon { filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.5)); }
+
+.pgw-plan-price--goblin       { color: #4ade80; }
+.pgw-plan-price--wizard       { color: #a78bfa; }
+.pgw-plan-price--elder-dragon { color: #f87171; }
+
+/* PlanSummary layout */
+.pgw-plan-summary    { margin-bottom: 24px; }
+.pgw-plan-info       { display: flex; align-items: center; gap: 12px; }
+/* Contenedor del icono del plan */
+.pgw-plan-icon-wrap  { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+/* Imagen del icono — mismas proporciones que en el PlanSelector del dashboard */
+.pgw-plan-icon-img   { width: 36px; height: 36px; object-fit: contain; display: block; }
+.pgw-plan-name       { font-size: 14px; color: #fef3c7; margin: 0; }
+.pgw-plan-label      { font-size: 11px; color: rgba(251,191,36,0.4); letter-spacing: 0.1em; margin: 0; }
+.pgw-plan-price-block { text-align: right; }
+.pgw-plan-price      { font-size: 20px; font-weight: 700; margin: 0; }
+.pgw-plan-period     { font-size: 10px; color: rgba(251,191,36,0.35); margin: 0; }
+
+/* PaymentSuccess */
+.pgw-success-title       { font-size: 24px; color: #fef3c7; margin-bottom: 8px; }
+.pgw-success-subtitle    { font-size: 14px; color: #34d399; letter-spacing: 0.1em; margin-bottom: 16px; }
+.pgw-success-body        { font-size: 16px; color: rgba(251,191,36,0.6); }
+.pgw-success-plan-name   { font-weight: 700; }
+.pgw-success-plan-name--goblin       { color: #4ade80; }
+.pgw-success-plan-name--wizard       { color: #a78bfa; }
+.pgw-success-plan-name--elder-dragon { color: #f87171; }
+.pgw-success-redirect    { margin-top: 24px; padding: 12px 20px; border-radius: 12px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); display: inline-block; }
+.pgw-success-redirect-text { font-size: 11px; color: rgba(52,211,153,0.7); letter-spacing: 0.1em; }
+
+/* CardPreview — fila inferior con titular y caducidad */
+.card-bottom-row  { display: flex; justify-content: space-between; align-items: flex-end; }
+.card-expiry-block { text-align: right; }
+
+/* Círculos de Mastercard — colores como clases en vez de inline style */
+.card-circle--red    { background: #eb001b; margin-right: -12px; }
+.card-circle--yellow { background: #f79e1b; }
+
+/* CardForm / PayPalPanel — contenedor de input con icono flotante */
+.pgw-input-wrap  { position: relative; }
+.pgw-input--upper { text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* Total a cobrar */
+.pgw-total-row    { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; margin-bottom: 24px; border-radius: 12px; background: rgba(180,83,9,0.08); border: 1px solid rgba(251,191,36,0.2); }
+.pgw-total-label  { font-size: 12px; color: rgba(251,191,36,0.6); letter-spacing: 0.1em; }
+.pgw-total-amount { font-size: 20px; font-weight: 700; color: #fef3c7; }
+
+/* Badges de seguridad */
+.pgw-security-row { display: flex; justify-content: center; gap: 20px; margin-top: 16px; }
+
+/* PayPalPanel */
+.pgw-paypal-logo   { font-size: 48px; margin-bottom: 12px; }
+.pgw-paypal-title  { font-size: 14px; color: #fef3c7; margin-bottom: 8px; }
+.pgw-paypal-desc   { font-size: 12px; color: rgba(251,191,36,0.4); letter-spacing: 0.06em; }
+.pgw-paypal-wordmark { display: inline-flex; align-items: center; }
+.pgw-paypal-pay    { font-family: Arial, sans-serif; font-weight: 900; font-size: 20px; letter-spacing: -1px; color: #fff; }
+.pgw-paypal-pal    { font-family: Arial, sans-serif; font-weight: 900; font-size: 20px; letter-spacing: -1px; color: #009cde; }
+.pgw-paypal-price  { font-size: 14px; margin-left: 4px; }
+.pgw-spinner--blue { border-color: rgba(255,255,255,0.3); border-top-color: #fff; }
+
+/* pgw-body con padding top incluido */
+.pgw-body { padding: 24px 32px 32px; }
+
+/* ── PlanSwitcher ────────────────────────────────────────────────────────────*/
+.pgw-plan-switcher {
+    margin-bottom: 20px;
+}
+.pgw-plan-switcher-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: rgba(251, 191, 36, 0.4);
+    margin-bottom: 10px;
+    text-align: center;
+}
+.pgw-plan-switcher-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+/* Base */
+.pgw-plan-switch-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1.5px solid transparent;
+    background: rgba(10, 5, 2, 0.7);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    text-align: left;
+}
+.pgw-plan-switch-btn:hover:not(.pgw-plan-switch-btn--active) {
+    background: rgba(20, 10, 4, 0.85);
+    transform: translateY(-1px);
+}
+
+/* Wizard — inactivo */
+.pgw-plan-switch-btn--wizard {
+    border-color: rgba(139, 92, 246, 0.25);
+}
+.pgw-plan-switch-btn--wizard:hover:not(.pgw-plan-switch-btn--active) {
+    border-color: rgba(139, 92, 246, 0.5);
+}
+/* Wizard — activo */
+.pgw-plan-switch-btn--wizard.pgw-plan-switch-btn--active {
+    border-color: #8b5cf6;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(10,5,2,0.9));
+    box-shadow: 0 0 18px rgba(139, 92, 246, 0.2);
+}
+
+/* Elder Dragon — inactivo */
+.pgw-plan-switch-btn--elder-dragon {
+    border-color: rgba(239, 68, 68, 0.25);
+}
+.pgw-plan-switch-btn--elder-dragon:hover:not(.pgw-plan-switch-btn--active) {
+    border-color: rgba(239, 68, 68, 0.5);
+}
+/* Elder Dragon — activo */
+.pgw-plan-switch-btn--elder-dragon.pgw-plan-switch-btn--active {
+    border-color: #ef4444;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.18), rgba(10,5,2,0.9));
+    box-shadow: 0 0 18px rgba(239, 68, 68, 0.2);
+}
+
+.pgw-plan-switch-icon-wrap {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pgw-plan-switch-icon {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    opacity: 0.5;
+    transition: opacity 0.25s;
+}
+.pgw-plan-switch-icon--active {
+    opacity: 1;
+}
+.pgw-plan-switch-btn--wizard.pgw-plan-switch-btn--active .pgw-plan-switch-icon--active {
+    filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.7));
+}
+.pgw-plan-switch-btn--elder-dragon.pgw-plan-switch-btn--active .pgw-plan-switch-icon--active {
+    filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.7));
+}
+
+.pgw-plan-switch-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+.pgw-plan-switch-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(254, 243, 199, 0.55);
+    letter-spacing: 0.06em;
+    transition: color 0.25s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pgw-plan-switch-btn--active .pgw-plan-switch-name {
+    color: #fef3c7;
+}
+.pgw-plan-switch-price {
+    font-size: 11px;
+    color: rgba(251, 191, 36, 0.3);
+    letter-spacing: 0.04em;
+    transition: color 0.25s;
+}
+.pgw-plan-switch-btn--wizard.pgw-plan-switch-btn--active .pgw-plan-switch-price {
+    color: #a78bfa;
+}
+.pgw-plan-switch-btn--elder-dragon.pgw-plan-switch-btn--active .pgw-plan-switch-price {
+    color: #f87171;
+}
+.pgw-plan-switch-check {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: 'Cinzel', serif;
+}
+.pgw-plan-switch-btn--wizard .pgw-plan-switch-check       { color: #8b5cf6; }
+.pgw-plan-switch-btn--elder-dragon .pgw-plan-switch-check { color: #ef4444; }

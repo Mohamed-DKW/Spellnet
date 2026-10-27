@@ -1,0 +1,136 @@
+/* ── Forms.css ───────────────────────────────────────────────────────────────
+   Estilos para los componentes de la carpeta Forms.
+   Complementa Tailwind — solo se usan clases propias cuando Tailwind
+   no puede expresar la variación por plan sin inline styles.
+*/
+
+/* ── PlanSelector ────────────────────────────────────────────────────────────*/
+.plan-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.plan-selector__label {
+    display: block;
+    color: #fde68a;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.plan-selector__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+/* Base de todos los botones de plan */
+.plan-btn {
+    position: relative;
+    padding: 12px 8px;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.plan-btn:hover {
+    transform: translateY(-2px);
+}
+
+.plan-btn--selected {
+    transform: scale(1.05);
+}
+
+/* ── Goblin ── */
+.plan-btn--goblin {
+    background: linear-gradient(135deg, rgba(5, 46, 22, 0.6), rgba(5, 46, 22, 0.35));
+    border-color: rgba(22, 163, 74, 0.3);
+}
+.plan-btn--goblin:hover {
+    border-color: rgba(22, 163, 74, 0.55);
+}
+.plan-btn--goblin.plan-btn--selected {
+    background: linear-gradient(135deg, #14532d, #166534);
+    border-color: #16a34a;
+    box-shadow: 0 0 16px rgba(22, 163, 74, 0.4);
+}
+
+/* ── Wizard ── */
+.plan-btn--wizard {
+    background: linear-gradient(135deg, rgba(46, 16, 101, 0.6), rgba(46, 16, 101, 0.35));
+    border-color: rgba(139, 92, 246, 0.3);
+}
+.plan-btn--wizard:hover {
+    border-color: rgba(139, 92, 246, 0.55);
+}
+.plan-btn--wizard.plan-btn--selected {
+    background: linear-gradient(135deg, #4c1d95, #5b21b6);
+    border-color: #8b5cf6;
+    box-shadow: 0 0 16px rgba(139, 92, 246, 0.4);
+}
+
+/* ── Elder Dragon ── */
+.plan-btn--elder-dragon {
+    background: linear-gradient(135deg, rgba(69, 10, 10, 0.6), rgba(69, 10, 10, 0.35));
+    border-color: rgba(239, 68, 68, 0.3);
+}
+.plan-btn--elder-dragon:hover {
+    border-color: rgba(239, 68, 68, 0.55);
+}
+.plan-btn--elder-dragon.plan-btn--selected {
+    background: linear-gradient(135deg, #7f1d1d, #991b1b);
+    border-color: #ef4444;
+    box-shadow: 0 0 16px rgba(239, 68, 68, 0.4);
+}
+
+/* ── Contenido del botón ── */
+.plan-btn__icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+.plan-btn__icon--active {
+    opacity: 1;
+}
+
+.plan-btn__name {
+    font-weight: 700;
+    font-size: 0.8125rem;
+    color: rgba(253, 230, 138, 0.65);
+    transition: color 0.2s ease;
+}
+.plan-btn--selected .plan-btn__name {
+    color: #ffffff;
+}
+
+.plan-btn__price {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(251, 191, 36, 0.4);
+    transition: color 0.2s ease;
+}
+.plan-btn--selected .plan-btn__price {
+    color: #fde68a;
+}
+
+/* Punto indicador de selección activa */
+.plan-btn__dot {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: currentColor;
+}
+.plan-btn--goblin .plan-btn__dot       { background: #16a34a; }
+.plan-btn--wizard .plan-btn__dot       { background: #8b5cf6; }
+.plan-btn--elder-dragon .plan-btn__dot { background: #ef4444; }

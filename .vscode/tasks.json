@@ -1,0 +1,139 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Ollama",
+      "type": "shell",
+      "command": "ollama serve",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "Listening on",
+          "file": 1,
+          "location": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Listening on",
+          "endsPattern": "."
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Wait For Ollama",
+      "type": "shell",
+      "command": "while ! curl -s http://127.0.0.1:11434/api/tags > /dev/null; do sleep 1; done",
+      "isBackground": false,
+      "dependsOn": ["Start Ollama"],
+      "problemMatcher": []
+    },
+    {
+      "type": "typescript",
+      "tsconfig": "backend/tsconfig.json",
+      "option": "watch",
+      "presentation": {
+        "echo": true,
+        "reveal": "never",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": ["$tsc-watch"],
+      "group": "build",
+      "label": "tsc: watch - backend"
+    },
+    {
+      "type": "typescript",
+      "tsconfig": "frontend/tsconfig.json",
+      "option": "watch",
+      "presentation": {
+        "echo": true,
+        "reveal": "never",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": ["$tsc-watch"],
+      "group": "build",
+      "label": "tsc: watch - frontend"
+    },
+    {
+      "label": "create-data-folder",
+      "type": "shell",
+      "command": "mkdir -p ${workspaceFolder}/backend/data",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Migrations",
+      "type": "shell",
+      "command": "cd backend && npm run migrate",
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Run Ingest",
+      "type": "shell",
+      "command": "cd backend && npm run ingest",
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Run Chat Script",
+      "type": "shell",
+      "command": "cd backend && npm run chat",
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Start Backend",
+      "type": "shell",
+      "command": "cd backend && npm run dev",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": [
+          {
+            "regexp": ".",
+            "file": 1,
+            "location": 2,
+            "message": 3
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*Servidor backend corriendo.*",
+          "endsPattern": ".*"
+        }
+      },
+      "group": "none"
+    },
+    {
+      "label": "Start Frontend",
+      "type": "shell",
+      "command": "cd frontend && npm run dev",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": [
+          {
+            "regexp": ".",
+            "file": 1,
+            "location": 2,
+            "message": 3
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*VITE.*ready.*",
+          "endsPattern": ".*"
+        }
+      },
+      "group": "none"
+    }
+  ]
+}

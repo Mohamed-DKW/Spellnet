@@ -1,0 +1,14 @@
+frontend/node_modules/*
+backend/node_modules/*
+frontend/node_modules/
+backend/node_modules/
+node_modules/
+node_modules/*
+**/.env
+**/.env.*
+!**/.env.example
+**/dist/
+/backend/uploads/
+/backend/vectordb.json
+/ollama.log
+/.publish-local-backup/

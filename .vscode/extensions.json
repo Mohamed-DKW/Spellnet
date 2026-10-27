@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "ms-vscode.vscode-typescript-next",
+    "ms-vscode.vscode-js-profile-flame",
+    "ms-vscode.vscode-jest",
+    "christian-kohler.npm-intellisense",
+    "wayou.vscode-todo-highlight",
+    "usernamehw.errorlens",
+    "eamodio.gitlens",
+    "pkief.material-icon-theme",
+    "oderwat.indent-rainbow",
+    "aaron-bond.better-comments"
+  ]
+}
