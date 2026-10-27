@@ -135,6 +135,7 @@ MySQL queda disponible en `localhost:3306` y ChromaDB en `http://localhost:8000`
 ```bash
 cd ..
 npm run migrate
+cd ..
 ```
 
 > ChromaDB no necesita migraciones manuales. El backend crea las colecciones al indexar documentos y el volumen Docker `chroma_data` conserva los vectores entre reinicios.
@@ -174,6 +175,7 @@ MySQL queda disponible en `localhost:3306` y ChromaDB en `http://localhost:8000`
 ```powershell
 cd ..
 npm run migrate
+cd ..
 ```
 
 > ChromaDB no necesita migraciones manuales. El volumen Docker `chroma_data` conserva los vectores entre reinicios.
@@ -218,6 +220,8 @@ ollama list
 ---
 
 ## Ejecución
+
+Ejecuta estos comandos desde la raíz del proyecto. En Linux, si dejaste `ollama serve` ejecutándose en otra terminal, abre una terminal nueva.
 
 ### Opción 1: Visual Studio Code (recomendado)
 
